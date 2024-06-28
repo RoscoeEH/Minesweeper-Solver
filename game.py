@@ -4,7 +4,7 @@
 import pygame
 import pygame.freetype
 
-from minesweeperLogic import *
+from minesweeperLogic import Board
 
 # Constants
 SCREEN_WIDTH = 800

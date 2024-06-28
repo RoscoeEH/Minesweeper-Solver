@@ -35,7 +35,7 @@ class Board:
         # Number of squares that need to be revealed for a win
         self.knownCount = width * height - numMines
         # All squares currently revealed
-        self.knownMap = [[0] * width for _ in range(height)]
+        self.knownMap = [[0] * width for _ in range(height)] # 1 for known, 0 for unknown
         self.gameLost = False
 
     # Takes the first squre clicked and the surrounding squares and makes them empty
@@ -144,3 +144,18 @@ class Board:
                     self.knownCount -= 1
                     self.knownMap[square[1]][square[0]] = 1
         return result
+
+    # Returns an array where -1 represents unknown to the player and if known has the number
+    def getState(self):
+        known = []
+
+        for row in range(self.height):
+            currentRow = []
+            for col in range(self.width):
+                if self.knownMap[row][col] == 1:
+                    currentRow.append(self.map[row][col])
+                else:
+                    currentRow.append(-1)
+            known.append(currentRow)
+        
+        return known
