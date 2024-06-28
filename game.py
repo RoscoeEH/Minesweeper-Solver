@@ -7,12 +7,12 @@ import pygame.freetype
 from minesweeperLogic import Board
 
 # Constants
-SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-GRID_WIDTH = 5
-GRID_HEIGHT = 5
-TILE_SIZE = 50
-NUM_MINES_START = 3
+SCREEN_WIDTH = SCREEN_HEIGHT + 200 # Accounts for game info
+GRID_WIDTH = 24
+GRID_HEIGHT = 20
+TILE_SIZE = min(SCREEN_HEIGHT // GRID_WIDTH, SCREEN_HEIGHT // GRID_HEIGHT)
+NUM_MINES_START = 99
 
 # Self-explainatory class
 # Used for reset button

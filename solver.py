@@ -1,8 +1,29 @@
 from minesweeperLogic import Board
 
 # Returns a list if coords for surrounding squares
-def surroundingCoords(info, x, y):
-    pass
+def getSurrounding(info, x, y):
+    # All surrounding coords for a center square
+    surrounding = []
+    for ny in range(y-1, y+2):
+        for nx in range(x-1, x+2):
+            # Skip the target
+            if nx == x and ny == y:
+                continue
+            if 0 < nx < info.width and 0 < ny < info.height:
+                surrounding.append([nx,ny])
+    return surrounding
+
+
+# Takes a list of coords and returns the number of surrounding bombs and unknown squares
+def countSurrounding(info, surrounding):
+    bombs = 0
+    unknown = 0
+    for square in surrounding:
+        if info.markedMap[square[1]][square[0]] == -2:
+            bombs += 1
+        elif info.markedMap[square[1]][square[0]] == -1:
+            unknown += 1
+    return bombs, unknown
 
 
 # Holds the solvers info on the board
@@ -28,10 +49,26 @@ def easyGets(info, toCheck):
         for x, item in enumerate(row):
             # If the item isn't unknown or marked check its surroundings
             # All squares around 0s are already cleared by update
-            if item > 0:
-                surroundingFlags = 0
-                remainingSquares = 0
-            ### Currently working on ###
+            if item <= 0:
+                continue
+
+            surrounding = getSurrounding(info, x, y)
+            # Count marked bombs and unknown squares
+            bombs, unknown = countSurrounding(info, surrounding)
+
+            # updates marks and adds new bombs too be checked
+            # and conditions prevent unneccasary loops
+            if bombs == item and len(surrounding) != bombs:
+                # add unknown to toCheck
+                for square in surrounding:
+                    if info.markedMap[square[1]][square[0]] == -1:
+                        toCheck.append(square)
+            elif unknown == item - bombs and unknown != 0:
+                # mark remaining bombs
+                for square in surrounding:
+                    if info.markedMap[square[1]][square[0]] == -1:
+                        info.markedMap[square[1]][square[0]] = -2
+
 
 
 # Checks for less obvious bombs by solving a system of linear equations based on the board
