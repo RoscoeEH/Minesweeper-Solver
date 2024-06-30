@@ -69,11 +69,71 @@ def easyGets(info, toCheck):
                     if info.markedMap[square[1]][square[0]] == -1:
                         info.markedMap[square[1]][square[0]] = -2
 
+# function for elementary operation of swapping two rows
+def swap_row(mat, i, j):
+ 
+    for k in range(N + 1):
+ 
+        temp = mat[i][k]
+        mat[i][k] = mat[j][k]
+        mat[j][k] = temp
+
+
+# function to reduce matrix to r.e.f.
+def rhoReduction(mat):
+    for k in range(N):
+       
+        # Initialize maximum value and index for pivot
+        i_max = k
+        v_max = mat[i_max][k]
+ 
+        # find greater amplitude for pivot if any
+        for i in range(k + 1, N):
+            if (abs(mat[i][k]) > v_max):
+                v_max = mat[i][k]
+                i_max = i
+ 
+        # if a principal diagonal element  is zero,
+        # it denotes that matrix is singular, and
+        # will lead to a division-by-zero later.
+        if not mat[k][i_max]:
+            return k    # Matrix is singular
+ 
+        # Swap the greatest value row with current row
+        if (i_max != k):
+            swap_row(mat, k, i_max)
+ 
+        for i in range(k + 1, N):
+ 
+            # factor f to set current row kth element to 0,
+            # and subsequently remaining kth column to 0 */
+            f = mat[i][k]/mat[k][k]
+ 
+            # subtract fth multiple of corresponding kth
+            # row element*/
+            for j in range(k + 1, N + 1):
+                mat[i][j] -= mat[k][j]*f
+ 
+            # filling lower triangular matrix with zeros*/
+            mat[i][k] = 0
+ 
+        # print(mat);        //for matrix state
+ 
+    # print(mat);            //for matrix state
+    return -1
+
 
 
 # Checks for less obvious bombs by solving a system of linear equations based on the board
 def nothingObvious(info, toCheck):
     pass
+    # Build the matrix
+    # Pick a square with sorounding bombs and add those
+    # Pick a bomb and add its surrounding squares
+    # Repeat till the matrix is large enough
+
+    
+    
 
 # Checks squares on the board and updates info accordingly
 def update(board, info, toCheck):
